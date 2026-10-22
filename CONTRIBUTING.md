@@ -13,7 +13,7 @@ Please be respectful, constructive, and considerate when interacting with contri
 ## 🛠️ How to Contribute
 
 ### 1. Reporting Bugs
-- Search existing [Issues](https://github.com/mohammed-alattas/pc-remote/issues) to see if the problem has already been reported.
+- Search existing [Issues](https://github.com/MuhDev/pc-remote/issues) to see if the problem has already been reported.
 - If not, open a new issue using the **Bug Report** template.
 - Include your Windows version (e.g. Windows 11 23H2), Python version, mobile browser details, and terminal logs.
 
