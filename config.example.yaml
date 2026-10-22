@@ -1,8 +1,8 @@
 # ==============================================================================
-# PC Remote - Configuration Template
+# PocketDeck - Configuration Template
 # ==============================================================================
 # Copy this file to config.yaml and edit according to your desktop setup.
-# On first run, PC Remote will automatically generate config.yaml from this file.
+# On first run, PocketDeck will automatically generate config.yaml from this file.
 
 server:
   host: "0.0.0.0"

@@ -1,12 +1,12 @@
-# PC Remote — Developer & Architecture Guide 🛠️
+# PocketDeck — Developer & Architecture Guide 🛠️
 
-This guide is designed for developers who want to understand the inner workings of **PC Remote**, extend its capabilities, or add new hardware/software integrations.
+This guide is designed for developers who want to understand the inner workings of **PocketDeck**, extend its capabilities, or add new hardware/software integrations.
 
 ---
 
 ## 🏛️ System Architecture Overview
 
-PC Remote combines a **low-latency Python FastAPI backend** interfacing directly with low-level Windows APIs, and a **zero-build, reactive Vanilla JavaScript frontend** delivered as a Progressive Web App (PWA).
+PocketDeck combines a **low-latency Python FastAPI backend** interfacing directly with low-level Windows APIs, and a **zero-build, reactive Vanilla JavaScript frontend** delivered as a Progressive Web App (PWA).
 
 ```mermaid
 flowchart TD

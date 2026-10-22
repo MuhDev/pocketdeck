@@ -1,7 +1,7 @@
-# PRODUCT.md — PC Remote
+# PRODUCT.md — PocketDeck
 
 ## Overview
-**PC Remote** is a low-latency, local-network hardware companion web application served directly from a Windows PC over FastAPI. It turns a user's smartphone into a dedicated **Stream Deck, Per-App Audio Mixer, and System Controller** — used either one-handed in **Portrait** mode or propped on a desk next to the monitor in **Landscape Cockpit** mode.
+**PocketDeck** is a low-latency, local-network hardware companion web application served directly from a Windows PC over FastAPI. It turns a user's smartphone into a dedicated **Stream Deck, Per-App Audio Mixer, and OBS Cockpit** — used either one-handed in **Portrait** mode or propped on a desk next to the monitor in **Landscape Cockpit** mode.
 
 ## Surface Mode
 - **Primary Mode:** `Operate` (precision instrument / hardware control surface)

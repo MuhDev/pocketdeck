@@ -1,6 +1,6 @@
-# Contributing to PC Remote 🤝
+# Contributing to PocketDeck 🤝
 
-First off, thank you for considering contributing to **PC Remote**! It is community contributions and open-source collaboration that make projects like this great.
+First off, thank you for considering contributing to **PocketDeck**! It is community contributions and open-source collaboration that make projects like this great.
 
 ---
 
@@ -13,7 +13,7 @@ Please be respectful, constructive, and considerate when interacting with contri
 ## 🛠️ How to Contribute
 
 ### 1. Reporting Bugs
-- Search existing [Issues](https://github.com/MuhDev/pc-remote/issues) to see if the problem has already been reported.
+- Search existing [Issues](https://github.com/MuhDev/pocketdeck/issues) to see if the problem has already been reported.
 - If not, open a new issue using the **Bug Report** template.
 - Include your Windows version (e.g. Windows 11 23H2), Python version, mobile browser details, and terminal logs.
 
@@ -25,8 +25,8 @@ Please be respectful, constructive, and considerate when interacting with contri
 ### 3. Submitting Pull Requests (PRs)
 1. Fork the repository and clone your fork locally:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/pc-remote.git
-   cd pc-remote
+   git clone https://github.com/YOUR_USERNAME/pocketdeck.git
+   cd pocketdeck
    ```
 2. Create a new topic branch:
    ```bash
@@ -74,4 +74,4 @@ Before opening a PR:
 
 ---
 
-Thank you for helping make PC Remote even better! 🚀
+Thank you for helping make PocketDeck even better! 🚀

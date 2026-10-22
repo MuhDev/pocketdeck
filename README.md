@@ -1,4 +1,4 @@
-# PC Remote 🎮📱
+# PocketDeck 🎛️📱
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Platform: Windows 10 / 11](https://img.shields.io/badge/Platform-Windows%2010%20%7C%2011-0078D6.svg?logo=windows)](https://www.microsoft.com/windows)
@@ -7,7 +7,7 @@
 [![PWA Ready](https://img.shields.io/badge/PWA-Ready-5A0FC8.svg?logo=pwa&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps)
 
 > **Low-latency, local-network hardware companion surface served directly from your Windows PC.**  
-> Turn your smartphone or tablet into a dedicated **Stream Deck, Per-Application Audio Mixer, Media Controller, and OBS Studio Cockpit** — used either one-handed in **Portrait** mode or docked next to your monitor in **Landscape Cockpit** mode. Zero cloud subscriptions, zero external telemetry, zero native app store installs.
+> Turn your smartphone or tablet into a dedicated, pocket-sized **Stream Deck, Per-Application Audio Mixer, Media Controller, and OBS Studio Cockpit** — used either one-handed in **Portrait** mode or docked next to your monitor in **Landscape Cockpit** mode. Zero cloud subscriptions, zero external telemetry, zero native app store installs.
 
 ---
 
@@ -17,27 +17,27 @@
 
 ### 1. Main Deck & Live Hardware Telemetry
 *Real-time CPU/RAM/GPU telemetry dials, Discord Quick Mute & Deafen toggles, Master volume control, and high-frequency application launch keycaps with native Windows iconography.*
-![PC Remote Deck Landscape](docs/screenshots/01-deck-landscape.png)
+![PocketDeck Landscape](docs/screenshots/01-deck-landscape.png)
 
 ### 2. Deck Editor (CRUD & Drag-and-Drop Reordering)
 *Live editing surface to reorder keys via touch drag-and-drop, delete presets with undo toast protection, search installed Windows Start Menu applications (`Get-StartApps`), and upload custom PNG keycaps.*
-![PC Remote Deck Editor Landscape](docs/screenshots/02-editor-landscape.png)
+![PocketDeck Editor Landscape](docs/screenshots/02-editor-landscape.png)
 
 ### 3. Per-App Windows Audio Mixer
 *Hardware-grade audio control surface powered by Windows CoreAudio (`pycaw`). Control individual volume levels for Spotify, games, Discord, and browsers with live process iconography and instant mute switches.*
-![PC Remote Audio Mixer Landscape](docs/screenshots/03-mixer-landscape.png)
+![PocketDeck Audio Mixer Landscape](docs/screenshots/03-mixer-landscape.png)
 
 ### 4. Windows Media Transport & Productivity Surface
 *Windows Global System Media Transport Controls (GSMTC) integration with real-time album artwork and track scrub bar. Includes remote clipboard synchronization, quick productivity keystrokes, and press-and-hold power controls.*
-![PC Remote Controls Landscape](docs/screenshots/04-controls-landscape.png)
+![PocketDeck Controls Landscape](docs/screenshots/04-controls-landscape.png)
 
 ### 5. OBS Studio Cockpit
 *Direct OBS WebSocket v5 integration with zero manual token configuration. Control streaming, recording, and replay buffers; switch scenes; toggle source visibility; and adjust individual audio faders with live dB indicators.*
-![PC Remote OBS Cockpit Landscape](docs/screenshots/05-obs-landscape.png)
+![PocketDeck OBS Cockpit Landscape](docs/screenshots/05-obs-landscape.png)
 
 ### 6. Security & Authentication
 *Local network protection with 4-digit PIN authentication (SHA-256 hashed) and Bearer session tokens.*
-![PC Remote Security Login](docs/screenshots/06-login-landscape.png)
+![PocketDeck Security Login](docs/screenshots/06-login-landscape.png)
 
 ---
 
@@ -90,8 +90,8 @@
 #### Method 1: One-Click Setup (Recommended)
 1. Clone or download this repository:
    ```bash
-   git clone https://github.com/MuhDev/pc-remote.git
-   cd pc-remote
+   git clone https://github.com/MuhDev/pocketdeck.git
+   cd pocketdeck
    ```
 2. Double-click **`setup.bat`**.  
    *This automatically creates the Python virtual environment (`venv`), installs all required dependencies, and sets up your default `config.yaml`.*
@@ -183,13 +183,13 @@ Paste the output into `pin_hash` inside `config.yaml` and restart the server.
 ### OBS Studio Setup
 1. In OBS Studio, navigate to **Tools** $\to$ **WebSocket Server Settings**.
 2. Check **Enable WebSocket server** (default port: `4455`).
-3. PC Remote will automatically detect the port and password from your local OBS installation files without manual entry!
+3. PocketDeck will automatically detect the port and password from your local OBS installation files without manual entry!
 
 ---
 
 ## 🛠️ Architecture & Contributing
 
-PC Remote is built with a zero-compilation philosophy:
+PocketDeck is built with a zero-compilation philosophy:
 - **Backend:** Python 3.10+ with FastAPI, Uvicorn, and native Windows bindings (`pycaw`, `comtypes`, `pynput`, `psutil`).
 - **COM Apartment Safety:** Windows CoreAudio calls execute in a dedicated STA background worker (`AudioCOMThread`) to prevent COM concurrency violations.
 - **Frontend:** Pure Vanilla JavaScript (ES modules) and native CSS design tokens. No Node.js build step or bundler needed.

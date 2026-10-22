@@ -1,5 +1,5 @@
 export const state = {
-  token: localStorage.getItem('pc_remote_token') || null,
+  token: localStorage.getItem('pocketdeck_token') || localStorage.getItem('pc_remote_token') || null,
   hostname: 'My PC',
   defaultPin: false,
   connection: 'connected', // 'connected' | 'reconnecting' | 'offline'

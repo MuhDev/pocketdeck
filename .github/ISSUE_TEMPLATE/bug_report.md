@@ -1,6 +1,6 @@
 ---
 name: Bug Report
-about: Create a report to help us improve PC Remote
+about: Create a report to help us improve PocketDeck
 title: '[BUG] '
 labels: bug
 assignees: ''
@@ -11,7 +11,7 @@ A clear and concise description of what the bug is.
 
 **To Reproduce**
 Steps to reproduce the behavior:
-1. Start PC Remote via `run.bat`
+1. Start PocketDeck via `run.bat`
 2. Connect mobile device via `http://<PC-IP>:8765`
 3. Enter PIN
 4. Click on '...'

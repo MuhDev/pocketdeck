@@ -6,7 +6,7 @@ import os
 from server.routers.api import router as api_router
 from server.config import settings
 
-app = FastAPI(title="PC Remote Control API")
+app = FastAPI(title="PocketDeck API")
 
 # Allow CORS for development if needed
 app.add_middleware(

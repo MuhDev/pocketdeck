@@ -37,7 +37,7 @@ def load_config() -> AppConfig:
         example_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "config.example.yaml")
         if os.path.exists(example_path):
             shutil.copyfile(example_path, CONFIG_PATH)
-            print(f"[PC Remote] Initialized config.yaml from config.example.yaml")
+            print(f"[PocketDeck] Initialized config.yaml from config.example.yaml")
         else:
             raise FileNotFoundError(f"Configuration file not found: {CONFIG_PATH}")
     

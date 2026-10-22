@@ -3,7 +3,7 @@ setlocal
 cd /d "%~dp0"
 
 echo ===============================================================================
-echo                     PC Remote - Setup & Environment Setup
+echo                     PocketDeck - Setup & Environment Setup
 echo ===============================================================================
 echo.
 

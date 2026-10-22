@@ -1,6 +1,6 @@
 ---
 name: Feature Request
-about: Suggest an idea or new hardware/software integration for PC Remote
+about: Suggest an idea or new hardware/software integration for PocketDeck
 title: '[FEATURE] '
 labels: enhancement
 assignees: ''

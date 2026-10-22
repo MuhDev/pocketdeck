@@ -1,7 +1,7 @@
-# DESIGN.md — PC Remote Design System
+# DESIGN.md — PocketDeck Design System
 
 ## 1. Aesthetic Direction (`true-black-flat` Hardware Control Surface)
-PC Remote follows the **Operate** mode discipline (`impeccable`) combined with **Taste-Skill's `true-black-flat`** app-screen architecture and **Emil Kowalski's** motion and mobile-native engineering rules:
+PocketDeck follows the **Operate** mode discipline (`impeccable`) combined with **Taste-Skill's `true-black-flat`** app-screen architecture and **Emil Kowalski's** motion and mobile-native engineering rules:
 - **Flat Tonal Hierarchy:** Elevation is expressed through solid lightness steps (`--bg-base` → `--surface-1` → `--surface-2` → `--surface-3`) and crisp `1px` hairlines (`rgba(255, 255, 255, 0.07)`).
 - **Zero Decorative Gradients or Neon Glows:** Cards, keys, and mixer rows never use radial color washes, multi-layer drop shadows, or zero-offset colored neon glows.
 - **Color Spent on State & Real Icons (~3–5% Budget):** The interface chrome stays quiet so real extracted 256×256 Windows application icons and active state indicators (`#7C5CFF` electric violet and semantic status dots) read immediately at a glance.

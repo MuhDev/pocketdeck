@@ -57,6 +57,7 @@ export function initLoginScreen(onLoginSuccess) {
       state.token = res.token;
       state.defaultPin = Boolean(res.default_pin);
       if (res.hostname) state.hostname = res.hostname;
+      localStorage.setItem('pocketdeck_token', res.token);
       localStorage.setItem('pc_remote_token', res.token);
       pinBuffer = '';
       renderDots(false);

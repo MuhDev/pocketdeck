@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pc-remote-v4';
+const CACHE_NAME = 'pocketdeck-v1';
 const SHELL_ASSETS = [
   '/',
   '/index.html',

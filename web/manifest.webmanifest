@@ -1,7 +1,7 @@
 {
-  "name": "PC Remote · Stream Deck",
-  "short_name": "PC Remote",
-  "description": "Tactile Stream Deck & audio control surface for your PC",
+  "name": "PocketDeck · Stream Deck & Cockpit",
+  "short_name": "PocketDeck",
+  "description": "Pocket-sized Stream Deck, Audio Mixer, and OBS Cockpit for your PC",
   "start_url": "/",
   "display": "standalone",
   "orientation": "any",

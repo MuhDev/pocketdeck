@@ -107,6 +107,7 @@ export function showApp() {
 export function logout() {
   state.token = null;
   state.editMode = false;
+  localStorage.removeItem('pocketdeck_token');
   localStorage.removeItem('pc_remote_token');
   stopPolling();
   closeSheet();
@@ -287,7 +288,7 @@ async function boot() {
 
   // Emil Break-UI stress test flag (?stress=1)
   if (params.has('stress')) {
-    localStorage.setItem('pc_remote_token', 'stress-token');
+    localStorage.setItem('pocketdeck_token', 'stress-token');
     enableBreakUiStressTest();
     const normTab = (targetTab === 'controls' || targetTab === 'extras') ? 'extras' : targetTab;
     if (normTab) switchTab(normTab);
