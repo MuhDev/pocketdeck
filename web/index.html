@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+  <meta name="theme-color" content="#08090C">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="PC Remote">
+  <title>PC Remote</title>
+  <link rel="preload" href="/assets/fonts/DMSansVariable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="icon" type="image/svg+xml" href="/assets/logo/favicon.svg">
+  <link rel="apple-touch-icon" href="/assets/logo/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/css/tokens.css?v=2">
+  <link rel="stylesheet" href="/css/base.css?v=2">
+  <link rel="stylesheet" href="/css/components.css?v=2">
+  <link rel="stylesheet" href="/css/screens.css?v=2">
+  <link rel="stylesheet" href="/css/editor.css?v=2">
+</head>
+<body>
+
+  <!-- Toast Notification Mount -->
+  <div id="toast-container" aria-live="polite"></div>
+
+  <!-- ====================================================================
+       AUTH / PIN PAD SCREEN
+       ==================================================================== -->
+  <main id="auth-screen">
+    <div class="auth-hero">
+      <img class="auth-logo-mark" src="/assets/logo/icon-192.png" alt="PC Remote Logo">
+      <h1 class="auth-title">PC Remote</h1>
+      <p class="auth-subtitle">Local Network Control Surface</p>
+      <div id="pin-dots" class="pin-dots" aria-label="PIN progress"></div>
+      <div id="pin-status-msg" class="pin-status-msg">Enter 4-digit security PIN</div>
+    </div>
+
+    <div id="pinpad-grid" class="pinpad-grid" role="group" aria-label="Numeric PIN Pad"></div>
+  </main>
+
+  <!-- MAIN APPLICATION SHELL -->
+  <div id="app-screen">
+    <!-- Top Header -->
+    <header class="top-header">
+      <div class="brand-cluster">
+        <img class="brand-mini-logo" src="/assets/logo/icon-192.png" alt="">
+        <div class="brand-titles">
+          <h1 id="header-hostname" class="header-hostname">My PC</h1>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <div id="conn-pill" class="conn-pill">
+          <span class="conn-dot"></span>
+          <span id="conn-status">Connected</span>
+        </div>
+        <button type="button" id="btn-logout" class="icon-pill-btn" title="Disconnect / Lock" aria-label="Disconnect">
+          <svg class="lucide"><use href="#icon-log-out"></use></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Default PIN Security Reminder Banner -->
+    <div id="default-pin-banner" class="security-banner">
+      <div class="security-banner-left">
+        <svg class="lucide"><use href="#icon-shield-alert"></use></svg>
+        <span>Default PIN (<strong>1234</strong>) is active; update <strong>config.yaml</strong> for security.</span>
+      </div>
+    </div>
+
+    <!-- ==================================================================
+         TAB 1: MAIN STREAM DECK
+         ================================================================== -->
+    <section id="tab-main" class="tab-pane active">
+      <div class="main-landscape-grid">
+        <div class="main-col-left">
+          <!-- Single-Encoding Hardware Telemetry Strip -->
+          <div class="stats-grid" role="region" aria-label="System Telemetry">
+            <div id="stat-card-cpu" class="stat-card">
+              <div class="stat-card-top">
+                <span class="stat-label">CPU</span>
+                <span id="stat-cpu" class="stat-value tabular">--%</span>
+              </div>
+              <div class="stat-bar-track">
+                <div id="stat-bar-cpu" class="stat-bar-fill"></div>
+              </div>
+            </div>
+
+            <div id="stat-card-ram" class="stat-card">
+              <div class="stat-card-top">
+                <span class="stat-label">RAM</span>
+                <span id="stat-ram" class="stat-value tabular">--%</span>
+              </div>
+              <div class="stat-bar-track">
+                <div id="stat-bar-ram" class="stat-bar-fill"></div>
+              </div>
+            </div>
+
+            <div id="stat-card-gpu" class="stat-card">
+              <div class="stat-card-top">
+                <span class="stat-label">GPU</span>
+                <span id="stat-gpu" class="stat-value tabular">--%</span>
+              </div>
+              <div class="stat-bar-track">
+                <div id="stat-bar-gpu" class="stat-bar-fill"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Voice & Audio Deck Keys -->
+          <div class="section-header">
+            <div class="section-title">Voice &amp; Output</div>
+          </div>
+          <div class="deck-grid voice-deck-grid">
+            <div id="key-discord-mute" class="deck-key" style="--key-accent: var(--blurple);" role="button" tabindex="0">
+              <span class="key-status-dot" aria-hidden="true"></span>
+              <div class="key-visual">
+                <svg class="lucide"><use href="#icon-mic"></use></svg>
+              </div>
+              <div class="key-label">Mic Mute</div>
+            </div>
+
+            <div id="key-discord-deafen" class="deck-key" style="--key-accent: var(--blurple);" role="button" tabindex="0">
+              <span class="key-status-dot" aria-hidden="true"></span>
+              <div class="key-visual">
+                <svg class="lucide"><use href="#icon-headphones"></use></svg>
+              </div>
+              <div class="key-label">Deafen</div>
+            </div>
+
+            <div id="key-master-mute" class="deck-key span-2" style="--key-accent: var(--accent);" role="button" tabindex="0">
+              <span class="key-status-dot" aria-hidden="true"></span>
+              <div class="key-visual">
+                <svg class="lucide"><use href="#icon-volume-2"></use></svg>
+              </div>
+              <div class="key-text-col">
+                <div class="key-label">Master Audio</div>
+                <div class="key-sublabel tabular">Active</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Master Volume Control Card -->
+          <div class="section-header">
+            <div class="section-title">Master Volume</div>
+            <div id="vol-label" class="master-vol-readout tabular">--%</div>
+          </div>
+          <div class="surface-card master-vol-card">
+            <div class="pro-slider-wrap">
+              <button type="button" id="btn-master-vol-pill" class="icon-pill-btn" aria-label="Toggle Master Mute">
+                <svg class="lucide"><use href="#icon-volume-2"></use></svg>
+              </button>
+              <input type="range" id="vol-slider" class="pro-slider" min="0" max="100" value="50" aria-label="Master Volume">
+            </div>
+          </div>
+        </div>
+
+        <div class="main-col-right">
+          <!-- Apps Stream Deck Grid + In-App Editor -->
+          <div class="section-header app-deck-header">
+            <div class="section-title">Applications</div>
+            <button type="button" id="btn-toggle-edit-apps" class="section-action-btn">
+              <svg class="lucide"><use href="#icon-pencil"></use></svg>
+              <span>Edit</span>
+            </button>
+          </div>
+          <div id="apps-container" class="deck-grid apps-deck-grid" data-ui>
+            <!-- Real PC app keys + Add App tile injected dynamically -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================================================================
+         TAB 2: PER-APP AUDIO MIXER
+         ================================================================== -->
+    <section id="tab-volumes" class="tab-pane">
+      <div class="section-header" style="margin-top: 8px;">
+        <div class="section-title">Application Audio Mixer</div>
+        <button type="button" id="btn-refresh-mixer" class="section-action-btn">
+          <svg class="lucide"><use href="#icon-refresh-cw"></use></svg>
+          <span>Refresh</span>
+        </button>
+      </div>
+      <div id="app-volumes-container" class="mixer-list">
+        <!-- App volume mixer rows with real PC app icons injected here -->
+      </div>
+    </section>
+
+    <!-- ==================================================================
+         TAB 3: SYSTEM CONTROLS (MEDIA, KEYBOARD, CLIPBOARD, POWER)
+         ================================================================== -->
+    <section id="tab-extras" class="tab-pane">
+      <div class="controls-landscape-grid">
+        <div class="controls-col-left">
+          <!-- Media Player Card -->
+          <div class="section-header" style="margin-top: 8px;">
+            <div class="section-title">Media Transport</div>
+          </div>
+          <div class="surface-card media-player-card">
+            <div class="media-player-top">
+              <div id="media-art-wrap" class="media-art-wrap" title="Spotify Media Player">
+                <div id="media-art-fallback" class="media-art-fallback">
+                  <svg class="spotify-logo-svg"><use href="#icon-spotify"></use></svg>
+                </div>
+              </div>
+              <div class="media-player-meta">
+                <div class="media-source-row">
+                  <span id="media-status-dot" class="media-status-dot"></span>
+                  <span id="media-source-badge" class="media-source-badge">Spotify</span>
+                </div>
+                <div id="media-track-title" class="media-track-title">No Media Playing</div>
+                <div id="media-track-artist" class="media-track-artist">Control PC audio playback</div>
+              </div>
+            </div>
+
+            <!-- Track Progress Bar -->
+            <div id="media-progress-container" class="media-progress-container" style="display: none;">
+              <div class="media-progress-track">
+                <div id="media-progress-fill" class="media-progress-fill"></div>
+              </div>
+              <div class="media-progress-times">
+                <span id="media-time-pos" class="tabular">0:00</span>
+                <span id="media-time-dur" class="tabular">0:00</span>
+              </div>
+            </div>
+
+            <!-- Transport Controls Row -->
+            <div class="media-player-controls">
+              <button type="button" id="btn-media-prev" class="media-btn" aria-label="Previous Track">
+                <svg class="lucide"><use href="#icon-skip-back"></use></svg>
+              </button>
+              <button type="button" id="btn-media-play" class="media-btn primary" aria-label="Play or Pause">
+                <svg class="lucide"><use href="#icon-play"></use></svg>
+              </button>
+              <button type="button" id="btn-media-next" class="media-btn" aria-label="Next Track">
+                <svg class="lucide"><use href="#icon-skip-forward"></use></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Remote Keyboard & Quick Shortcuts -->
+          <div class="section-header">
+            <div class="section-title">Keyboard &amp; Shortcuts</div>
+          </div>
+          <div class="surface-card">
+            <div class="input-action-row">
+              <input type="text" id="type-input" class="text-input" placeholder="Type text directly onto PC…" enterkeyhint="send" autocapitalize="off" autocorrect="off" spellcheck="false">
+              <button type="button" id="btn-send-type" class="primary-btn">
+                <svg class="lucide"><use href="#icon-send"></use></svg>
+                <span>Send</span>
+              </button>
+            </div>
+            <div class="quick-keys-row">
+              <button type="button" class="quick-key-btn" data-key-action="copy" data-key-label="Copy">
+                <svg class="lucide"><use href="#icon-copy"></use></svg>
+                <span>Copy</span>
+              </button>
+              <button type="button" class="quick-key-btn" data-key-action="paste" data-key-label="Paste">
+                <svg class="lucide"><use href="#icon-clipboard-paste"></use></svg>
+                <span>Paste</span>
+              </button>
+              <button type="button" class="quick-key-btn" data-key-action="cut" data-key-label="Cut">
+                <svg class="lucide"><use href="#icon-scissors"></use></svg>
+                <span>Cut</span>
+              </button>
+              <button type="button" class="quick-key-btn" data-key-action="undo" data-key-label="Undo">
+                <svg class="lucide"><use href="#icon-undo-2"></use></svg>
+                <span>Undo</span>
+              </button>
+              <button type="button" class="quick-key-btn" data-key-action="select_all" data-key-label="Select All">
+                <svg class="lucide"><use href="#icon-check-square"></use></svg>
+                <span>All</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="controls-col-right">
+          <!-- Clipboard Sync Studio -->
+          <div class="section-header controls-right-first-header">
+            <div class="section-title">Clipboard Sync</div>
+          </div>
+          <div class="surface-card">
+            <textarea id="clipboard-text" class="clipboard-textarea" placeholder="Paste or inspect shared clipboard text…" autocapitalize="off" autocorrect="off"></textarea>
+            <div class="clipboard-actions">
+              <button type="button" id="btn-clip-send" class="secondary-btn">
+                <svg class="lucide"><use href="#icon-arrow-up-right"></use></svg>
+                <span>To PC</span>
+              </button>
+              <button type="button" id="btn-clip-get" class="secondary-btn">
+                <svg class="lucide"><use href="#icon-arrow-down-left"></use></svg>
+                <span>From PC</span>
+              </button>
+              <button type="button" id="btn-clip-local" class="secondary-btn">
+                <svg class="lucide"><use href="#icon-copy"></use></svg>
+                <span>Copy</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- System Power Deck -->
+          <div class="section-header">
+            <div class="section-title">Power Management</div>
+          </div>
+          <div class="deck-grid power-deck-grid">
+            <div class="deck-key" style="--key-accent: var(--cyan);" data-power-action="lock" role="button" tabindex="0">
+              <div class="key-visual">
+                <svg class="lucide"><use href="#icon-lock"></use></svg>
+              </div>
+              <div class="key-label">Lock</div>
+            </div>
+
+            <div class="deck-key" style="--key-accent: var(--warning);" data-power-action="sleep" role="button" tabindex="0">
+              <div class="key-visual">
+                <svg class="lucide"><use href="#icon-moon"></use></svg>
+              </div>
+              <div class="key-label">Sleep</div>
+            </div>
+
+            <div class="deck-key" style="--key-accent: var(--warning);" data-power-action="restart" role="button" tabindex="0">
+              <div class="key-visual">
+                <svg class="lucide"><use href="#icon-rotate-ccw"></use></svg>
+              </div>
+              <div class="key-label">Restart</div>
+            </div>
+
+            <div class="deck-key" style="--key-accent: var(--danger);" data-power-action="shutdown" role="button" tabindex="0">
+              <div class="key-visual">
+                <svg class="lucide"><use href="#icon-power"></use></svg>
+              </div>
+              <div class="key-label">Shutdown</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================================================================
+         TAB 4: OBS STUDIO BROADCAST COCKPIT
+         ================================================================== -->
+    <section id="tab-obs" class="tab-pane">
+      <div class="obs-landscape-grid">
+        <div class="obs-col-left">
+          <!-- Connection & Status Banner -->
+          <div id="obs-conn-banner" class="obs-conn-banner">
+            <div class="obs-conn-status-row">
+              <span id="obs-conn-dot" class="obs-status-dot"></span>
+              <span id="obs-conn-text" class="obs-conn-text">Connecting to OBS Studio…</span>
+            </div>
+            <div class="obs-conn-actions">
+              <button type="button" id="btn-obs-launch" class="ghost-btn compact" title="Launch OBS Studio">
+                <svg class="lucide"><use href="#icon-video"></use></svg>
+                <span>Launch</span>
+              </button>
+              <button type="button" id="btn-obs-reconnect" class="ghost-btn compact" title="Reconnect WebSocket">
+                <svg class="lucide"><use href="#icon-refresh-cw"></use></svg>
+                <span>Connect</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Broadcast Master Transport Cards -->
+          <div class="section-header" style="margin-top: 12px;">
+            <div class="section-title">Broadcast Transport</div>
+          </div>
+          <div class="obs-transport-grid">
+            <!-- Stream Card -->
+            <div id="obs-stream-card" class="surface-card obs-broadcast-card">
+              <div class="obs-card-top">
+                <div class="obs-indicator-group">
+                  <span id="obs-stream-dot" class="obs-live-dot"></span>
+                  <span class="obs-card-title">Live Stream</span>
+                </div>
+                <span id="obs-stream-timer" class="obs-timecode tabular">00:00:00</span>
+              </div>
+              <div class="obs-card-meta">
+                <span id="obs-stream-stats" class="obs-meta-text">Offline</span>
+              </div>
+              <button type="button" id="btn-obs-stream" class="obs-action-btn primary" aria-label="Toggle Stream">
+                <svg class="lucide"><use href="#icon-radio"></use></svg>
+                <span id="btn-obs-stream-label">Start Stream</span>
+              </button>
+            </div>
+
+            <!-- Record Card -->
+            <div id="obs-record-card" class="surface-card obs-broadcast-card">
+              <div class="obs-card-top">
+                <div class="obs-indicator-group">
+                  <span id="obs-record-dot" class="obs-rec-dot"></span>
+                  <span class="obs-card-title">Recording</span>
+                </div>
+                <span id="obs-record-timer" class="obs-timecode tabular">00:00:00</span>
+              </div>
+              <div class="obs-card-meta">
+                <span id="obs-record-stats" class="obs-meta-text">Ready</span>
+              </div>
+              <div class="obs-btn-split">
+                <button type="button" id="btn-obs-record" class="obs-action-btn primary flex-1" aria-label="Toggle Record">
+                  <svg class="lucide"><use href="#icon-circle-dot"></use></svg>
+                  <span id="btn-obs-record-label">Start Record</span>
+                </button>
+                <button type="button" id="btn-obs-pause-record" class="obs-icon-btn" aria-label="Pause Recording" title="Pause / Resume Record">
+                  <svg class="lucide"><use href="#icon-pause"></use></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4 Quick Studio Hardware Keys -->
+          <div class="deck-grid obs-tools-grid">
+            <div id="btn-obs-vcam" class="deck-key obs-tool-key" role="button" tabindex="0" title="Toggle Virtual Camera">
+              <div class="key-icon-area">
+                <svg class="lucide"><use href="#icon-video"></use></svg>
+              </div>
+              <div class="key-label">Virtual Cam</div>
+            </div>
+            <div id="btn-obs-replay" class="deck-key obs-tool-key" role="button" tabindex="0" title="Save Instant Replay Buffer">
+              <div class="key-icon-area">
+                <svg class="lucide"><use href="#icon-save"></use></svg>
+              </div>
+              <div class="key-label">Save Replay</div>
+            </div>
+            <div id="btn-obs-studiomode" class="deck-key obs-tool-key" role="button" tabindex="0" title="Toggle Studio Mode">
+              <div class="key-icon-area">
+                <svg class="lucide"><use href="#icon-clapperboard"></use></svg>
+              </div>
+              <div class="key-label">Studio Mode</div>
+            </div>
+            <div id="btn-obs-transition" class="deck-key obs-tool-key primary-accent" role="button" tabindex="0" title="Cut / Transition Scene">
+              <div class="key-icon-area">
+                <svg class="lucide"><use href="#icon-arrow-right-left"></use></svg>
+              </div>
+              <div class="key-label">Transition</div>
+            </div>
+          </div>
+
+          <!-- Scene Switcher Grid -->
+          <div class="section-header">
+            <div class="section-title">Scenes</div>
+            <span id="obs-active-scene-badge" class="obs-badge tabular">Program: None</span>
+          </div>
+          <div id="obs-scenes-container" class="deck-grid obs-scenes-grid">
+            <!-- Dynamic Scenes populated by JS -->
+          </div>
+        </div>
+
+        <div class="obs-col-right">
+          <!-- Audio Mixer -->
+          <div class="section-header">
+            <div class="section-title">Audio Inputs</div>
+          </div>
+          <div id="obs-audio-container" class="surface-card obs-audio-card">
+            <!-- Dynamic Audio Inputs populated by JS -->
+          </div>
+
+          <!-- Active Scene Sources / Layers -->
+          <div class="section-header">
+            <div class="section-title">Scene Sources</div>
+            <span class="obs-badge">Active Scene</span>
+          </div>
+          <div id="obs-sources-container" class="surface-card obs-sources-card">
+            <!-- Dynamic Scene Items populated by JS -->
+          </div>
+
+          <!-- Streamer Utility Shortcuts -->
+          <div class="section-header">
+            <div class="section-title">Stream Utilities</div>
+          </div>
+          <div class="surface-card obs-utils-row">
+            <button type="button" id="btn-obs-refresh-browser" class="ghost-btn flex-1" title="Reload chat & alert overlays without restarting OBS">
+              <svg class="lucide"><use href="#icon-refresh-cw"></use></svg>
+              <span>Reload Overlays</span>
+            </button>
+            <button type="button" id="btn-obs-screenshot" class="ghost-btn flex-1" title="Capture instant high-res stream screenshot">
+              <svg class="lucide"><use href="#icon-camera"></use></svg>
+              <span>Screenshot</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Single-Blur Bottom / Side Navigation Dock -->
+    <nav class="tabbar-wrap" aria-label="Primary Navigation">
+      <div class="tabbar">
+        <div id="tabbar-indicator" class="tabbar-indicator"></div>
+        <button type="button" class="tab-btn active" data-tab="main">
+          <svg class="lucide"><use href="#icon-layout-grid"></use></svg>
+          <span>Deck</span>
+        </button>
+        <button type="button" class="tab-btn" data-tab="volumes">
+          <svg class="lucide"><use href="#icon-sliders-horizontal"></use></svg>
+          <span>Mixer</span>
+        </button>
+        <button type="button" class="tab-btn" data-tab="extras">
+          <svg class="lucide"><use href="#icon-command"></use></svg>
+          <span>Controls</span>
+        </button>
+        <button type="button" class="tab-btn" data-tab="obs">
+          <svg class="lucide"><use href="#icon-video"></use></svg>
+          <span>OBS</span>
+        </button>
+      </div>
+    </nav>
+  </div>
+
+  <!-- ====================================================================
+       REUSABLE BOTTOM SHEET MODAL
+       ==================================================================== -->
+  <div id="sheet-backdrop" class="sheet-backdrop" role="dialog" aria-modal="true">
+    <div class="bottom-sheet">
+      <div class="sheet-drag-zone">
+        <div class="sheet-handle-bar"></div>
+        <div class="sheet-header">
+          <div id="sheet-title" class="sheet-title"></div>
+          <button type="button" id="sheet-close-btn" class="sheet-close-btn" aria-label="Close">
+            <svg class="lucide"><use href="#icon-x"></use></svg>
+          </button>
+        </div>
+      </div>
+      <div id="sheet-body" class="sheet-body"></div>
+    </div>
+  </div>
+
+  <script type="module" src="/js/main.js?v=2"></script>
+</body>
+</html>

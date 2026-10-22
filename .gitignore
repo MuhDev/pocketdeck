@@ -1,0 +1,45 @@
+# Python Virtual Environments
+venv/
+.venv/
+env/
+
+# Python Bytecode & Cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.tmp
+
+# Runtime Caches (Preserve directory structure via .gitkeep)
+data/icons/cache/*
+!data/icons/cache/.gitkeep
+data/media/cache/*
+!data/media/cache/.gitkeep
+data/media/now_playing.jpg
+
+# Development Scratch & Assistant Tool Artifacts
+scratch/
+.agents/
+.taste-skill/
+
+# Local User Configuration (Auto-generated from config.example.yaml on first boot)
+config.yaml
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Packaging & Build
+build/
+dist/
+*.egg-info/
+
+# Operating System
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editors & IDEs
+.vscode/
+.idea/
+*.swp

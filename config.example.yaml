@@ -1,0 +1,63 @@
+# ==============================================================================
+# PC Remote - Configuration Template
+# ==============================================================================
+# Copy this file to config.yaml and edit according to your desktop setup.
+# On first run, PC Remote will automatically generate config.yaml from this file.
+
+server:
+  host: "0.0.0.0"
+  port: 8765
+  # SHA-256 hash of your 4-digit security PIN.
+  # Default is '1234': 03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4
+  # Generate a hash for your custom PIN with Python:
+  #   python -c "import hashlib; print(hashlib.sha256(b'YOUR_PIN').hexdigest())"
+  pin_hash: "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4"
+
+discord:
+  # Configure these matching your Discord keybinds:
+  # Discord -> User Settings -> Keybinds -> Add a Keybind
+  #   - Action: Toggle Mute -> Ctrl + Shift + Alt + M
+  #   - Action: Toggle Deafen -> Ctrl + Shift + Alt + U
+  mute_hotkey: ["ctrl", "shift", "alt", "m"]
+  deafen_hotkey: ["ctrl", "shift", "alt", "u"]
+
+# Default application presets for your Stream Deck grid.
+# Supported preset types:
+#   - 'app': Direct executable path with optional command-line arguments
+#   - 'url': Opens URL in your default browser
+#   - 'shell_app': Windows Start Menu / UWP AppUserModelId (run Get-StartApps in PowerShell)
+#   - 'steam': Steam run URI (steam://rungameid/<id>)
+#   - 'folder': Opens directory in Windows Explorer
+presets:
+  - id: discord
+    name: Discord
+    type: app
+    target: '%LOCALAPPDATA%\Discord\Update.exe'
+    args:
+      - --processStart
+      - Discord.exe
+
+  - id: spotify
+    name: Spotify
+    type: shell_app
+    target: SpotifyAB.SpotifyMusic_zpdnekdrzrea0!Spotify
+
+  - id: youtube
+    name: YouTube
+    type: url
+    target: https://youtube.com
+
+  - id: obs-studio
+    name: OBS Studio
+    type: shell_app
+    target: '{6D809377-6AF0-444B-8957-A3773F02200E}\obs-studio\bin\64bit\obs64.exe'
+
+  - id: brave
+    name: Brave
+    type: shell_app
+    target: Brave
+
+  - id: notepad
+    name: Notepad
+    type: app
+    target: 'notepad.exe'

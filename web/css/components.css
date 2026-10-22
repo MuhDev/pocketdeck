@@ -1,0 +1,627 @@
+/* ==========================================================================
+   1. STREAM DECK KEY (.deck-key) — Flat Hardware Control Surface
+   ========================================================================== */
+.deck-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.deck-grid.cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.deck-grid.cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.deck-key {
+  --key-accent: var(--accent);
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--r-md);
+  background: var(--surface-2);
+  border: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 6px 7px 6px;
+  cursor: pointer;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  transition: transform var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .deck-key:hover {
+    background: var(--surface-3);
+    border-color: var(--border-strong);
+  }
+}
+
+.deck-key:active,
+.deck-key.pressed {
+  transform: scale(0.97);
+  background: var(--surface-3);
+}
+
+.deck-key.active-state {
+  background: var(--surface-3);
+  border-color: var(--key-accent);
+}
+
+.deck-key .key-status-dot {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+.deck-key.active-state .key-status-dot {
+  background: var(--key-accent);
+}
+
+.deck-key .key-visual {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+}
+
+.deck-key .key-visual > .lucide {
+  width: 24px;
+  height: 24px;
+  color: var(--text-primary);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.deck-key.active-state .key-visual > .lucide {
+  color: var(--key-accent);
+}
+
+.deck-key .key-app-icon {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  border-radius: 9px;
+  transition: transform var(--dur-fast) var(--ease-out), opacity var(--dur-fast) var(--ease-out);
+}
+
+.deck-key .key-label {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text-primary);
+  text-align: center;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: -0.01em;
+  margin-top: 4px;
+}
+
+.deck-key .key-sublabel {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+/* Wide 2-column key variant */
+.deck-key.span-2 {
+  grid-column: span 2;
+  aspect-ratio: auto;
+  min-height: 74px;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+}
+.deck-key.span-2 .key-visual {
+  flex: 0 0 auto;
+  width: auto;
+}
+.deck-key.span-2 .key-text-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  flex: 1;
+}
+.deck-key.span-2 .key-label {
+  text-align: left;
+  font-size: 13.5px;
+  font-weight: 600;
+  margin-top: 0;
+}
+
+/* Shimmer loading state for icon */
+.icon-skeleton {
+  background: var(--surface-3);
+  animation: pulseSkeleton 1.4s ease-in-out infinite;
+}
+@keyframes pulseSkeleton {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.9; }
+}
+
+/* ==========================================================================
+   2. SURFACE CARD & CUSTOM FILLED SLIDER (.pro-slider)
+   ========================================================================== */
+.surface-card {
+  background: var(--surface-1);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-md);
+  padding: 14px 16px;
+}
+
+.pro-slider-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.pro-slider {
+  --fill-pct: 50%;
+  --slider-color: var(--accent);
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  height: 6px;
+  border-radius: var(--r-pill);
+  background: linear-gradient(90deg, var(--slider-color) var(--fill-pct), var(--surface-3) var(--fill-pct)); /* taste-skill-ignore */
+  cursor: pointer;
+  outline: none;
+}
+
+.pro-slider.is-muted {
+  --slider-color: var(--text-muted);
+  opacity: 0.65;
+}
+
+.pro-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 2px solid var(--slider-color);
+  cursor: grab;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.pro-slider::-webkit-slider-thumb:active {
+  cursor: grabbing;
+  transform: scale(1.1);
+}
+
+.pro-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 2px solid var(--slider-color);
+  cursor: grab;
+}
+
+.icon-pill-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--r-xs);
+  background: var(--surface-2);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .icon-pill-btn:hover {
+    background: var(--surface-3);
+    border-color: var(--border-strong);
+  }
+}
+.icon-pill-btn:active {
+  transform: scale(0.97);
+}
+.icon-pill-btn.muted {
+  background: var(--danger-tint);
+  border-color: rgba(229, 72, 77, 0.4);
+  color: var(--danger);
+}
+
+/* ==========================================================================
+   3. SINGLE-ENCODING TELEMETRY STRIP (.stats-grid)
+   ========================================================================== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.stat-card {
+  position: relative;
+  background: var(--surface-1);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-md);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.stat-card-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.stat-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.stat-bar-track {
+  width: 100%;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--surface-3);
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.stat-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.3s var(--ease-out), background-color 0.3s var(--ease-out);
+}
+
+.stat-card.is-warn .stat-bar-fill {
+  background: var(--warning);
+}
+
+.stat-card.is-danger .stat-bar-fill {
+  background: var(--danger);
+}
+
+/* ==========================================================================
+   4. BOTTOM SHEET MODAL (.bottom-sheet) — Drag to Dismiss
+   ========================================================================== */
+.sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 5, 8, 0.76);
+  z-index: 900;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-med) var(--ease-out);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.sheet-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.bottom-sheet {
+  width: 100%;
+  max-width: 520px;
+  max-height: 86dvh;
+  background: var(--surface-sheet);
+  border-top: 1px solid var(--border-strong);
+  border-left: 1px solid var(--border-subtle);
+  border-right: 1px solid var(--border-subtle);
+  border-radius: 24px 24px 0 0;
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.7); /* taste-skill-ignore */
+  transform: translateY(102%);
+  transition: transform 0.32s var(--ease-drawer);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding-bottom: env(safe-area-inset-bottom, 16px);
+  will-change: transform;
+}
+
+.sheet-backdrop.open .bottom-sheet {
+  transform: translateY(0);
+}
+
+.sheet-drag-zone {
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  flex-shrink: 0;
+}
+
+.sheet-drag-zone:active {
+  cursor: grabbing;
+}
+
+.sheet-handle-bar {
+  width: 36px;
+  height: 4px;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.2);
+  margin: 10px auto 4px auto;
+}
+
+.sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 20px 12px 20px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.sheet-title {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.sheet-close-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r-xs);
+  background: var(--surface-2);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .sheet-close-btn:hover {
+    background: var(--surface-3);
+    color: var(--text-primary);
+  }
+}
+.sheet-close-btn:active {
+  transform: scale(0.97);
+}
+
+.sheet-body {
+  padding: 16px 20px 20px 20px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  flex: 1;
+}
+
+/* ==========================================================================
+   5. PRESS-AND-HOLD CONFIRM BUTTON (.hold-btn) — Hardware Clip-Path
+   ========================================================================== */
+.hold-btn {
+  position: relative;
+  width: 100%;
+  height: 52px;
+  border-radius: var(--r-md);
+  background: var(--surface-3);
+  border: 1px solid var(--border-strong);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.hold-btn-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--danger-solid);
+  clip-path: inset(0 100% 0 0);
+  pointer-events: none;
+  will-change: clip-path;
+  transition: clip-path 200ms var(--ease-out);
+}
+
+.hold-btn.holding .hold-btn-fill {
+  clip-path: inset(0 0% 0 0);
+  transition: clip-path 1150ms linear;
+}
+
+.hold-btn-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ==========================================================================
+   6. FLOATING BOTTOM / SIDE NAVIGATION DOCK (.tabbar)
+   ========================================================================== */
+.tabbar-wrap {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 400;
+  padding: 8px 16px calc(12px + env(safe-area-inset-bottom, 0px)) 16px;
+  pointer-events: none;
+}
+
+.tabbar {
+  max-width: 460px;
+  margin: 0 auto;
+  height: 60px;
+  background: var(--surface-glass);
+  backdrop-filter: blur(20px); /* taste-skill-ignore */
+  -webkit-backdrop-filter: blur(20px); /* taste-skill-ignore */
+  border: 1px solid var(--border-strong);
+  border-radius: 20px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7); /* taste-skill-ignore */
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 4px;
+  position: relative;
+  pointer-events: auto;
+}
+
+.tabbar-indicator {
+  --active-tab-index: 0;
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc((100% - 8px) / 4);
+  border-radius: 16px;
+  background: var(--surface-3);
+  border: 1px solid var(--border-strong);
+  transform: translateX(calc(var(--active-tab-index, 0) * 100%));
+  transition: transform 0.24s var(--ease-out);
+  pointer-events: none;
+}
+
+.tab-btn {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  color: var(--text-muted);
+  border-radius: 16px;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.tab-btn * {
+  pointer-events: none;
+}
+
+.tab-btn .lucide {
+  width: 19px;
+  height: 19px;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.tab-btn span {
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.tab-btn.active {
+  color: var(--text-primary);
+}
+
+.tab-btn.active .lucide {
+  color: var(--accent);
+}
+
+/* ==========================================================================
+   7. TOAST NOTIFICATION (.toast-bar)
+   ========================================================================== */
+#toast-container {
+  position: fixed;
+  bottom: calc(82px + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+  width: calc(100% - 32px);
+  max-width: 420px;
+}
+
+.toast-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  border-radius: var(--r-pill);
+  background: var(--surface-2);
+  border: 1px solid var(--border-strong);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7); /* taste-skill-ignore */
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 500;
+  pointer-events: auto;
+  opacity: 0;
+  transform: translateY(12px) scale(0.97);
+  transition: opacity 0.2s var(--ease-out), transform 0.2s var(--ease-out);
+}
+
+.toast-bar.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.toast-bar.toast-error {
+  border-color: rgba(229, 72, 77, 0.5);
+}
+
+.toast-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toast-left .lucide {
+  width: 16px;
+  height: 16px;
+  color: var(--accent);
+}
+
+.toast-bar.toast-error .toast-left .lucide {
+  color: var(--danger);
+}
+
+.toast-action-btn {
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  background: var(--surface-3);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  font-size: 12px;
+  font-weight: 600;
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+.toast-action-btn:active {
+  transform: scale(0.97);
+  background: var(--surface-4);
+}

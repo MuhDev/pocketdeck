@@ -1,0 +1,82 @@
+@font-face {
+  font-family: 'DM Sans';
+  src: url('/assets/fonts/DMSansVariable.woff2') format('woff2');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* Core Surfaces - True-Black-Flat Hardware Control Surface */
+  --bg-canvas: #08090C;
+  --bg-elevated: #0E1014;
+  --surface-1: #111216;
+  --surface-2: #17181D;
+  --surface-3: #1F2027;
+  --surface-4: #282A33;
+  --surface-glass: rgba(14, 16, 20, 0.90);
+  --surface-sheet: #111216;
+
+  /* Keycap Surfaces */
+  --key-bg: #17181D;
+  --key-bg-hover: #1F2027;
+  --key-bg-active: #252730;
+  --key-border: rgba(255, 255, 255, 0.08);
+  --key-border-strong: rgba(255, 255, 255, 0.16);
+
+  /* Borders & Hairlines */
+  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-strong: rgba(255, 255, 255, 0.14);
+  --border-focus: rgba(124, 92, 255, 0.72);
+
+  /* Typography Colors — All WCAG AA (>= 4.5:1) verified across surfaces */
+  --text-primary: #F3F5F8;
+  --text-secondary: #B4BCCF;
+  --text-muted: #8E97AD;
+
+  /* Brand & Calibrated Instrument Status Accents */
+  --accent: #7C5CFF;
+  --accent-solid: #6242F5;
+  --accent-pressed: #5335DB;
+  --accent-tint: rgba(124, 92, 255, 0.14);
+  --accent-tint-strong: rgba(124, 92, 255, 0.24);
+
+  --blurple: #5865F2;
+  --blurple-tint: rgba(88, 101, 242, 0.16);
+  --success: #22C58B;
+  --success-tint: rgba(34, 197, 139, 0.14);
+  --warning: #E5A024;
+  --warning-tint: rgba(229, 160, 36, 0.15);
+  --danger: #E5484D;
+  --danger-tint: rgba(229, 72, 77, 0.16);
+  --danger-solid: #C9363B;
+  --cyan: #18B4CE;
+
+  /* Spacing Scale (4px grid) */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+
+  /* Border Radii */
+  --r-xs: 8px;
+  --r-sm: 12px;
+  --r-md: 14px;
+  --r-lg: 18px;
+  --r-xl: 22px;
+  --r-pill: 999px;
+
+  /* Motion Curves (Emil Kowalski Scale) */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 120ms;
+  --dur-med: 200ms;
+
+  /* Typography */
+  --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+}

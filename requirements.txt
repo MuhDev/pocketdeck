@@ -1,0 +1,16 @@
+fastapi
+uvicorn[standard]
+pycaw
+comtypes
+pynput
+pyperclip
+psutil
+pyyaml
+pydantic
+pydantic-settings
+pystray
+pillow
+qrcode
+ruamel.yaml
+python-multipart
+websockets
