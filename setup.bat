@@ -150,16 +150,35 @@ if not exist "venv\Scripts\activate.bat" (
 echo.
 
 :: -----------------------------------------------------------------------------
-:: Step 3: Install Packages
+:: Step 3: Install Packages & Handle C++ Build Tools
 :: -----------------------------------------------------------------------------
 echo [3/4] Installing PocketDeck components...
 echo       (This takes about 30 seconds on first run, please wait...)
 
+:: Check for Visual C++ Runtime DLL (vcruntime140.dll)
+if not exist "%SystemRoot%\System32\vcruntime140.dll" (
+    echo       [i] Visual C++ Runtime not found. Attempting automatic install...
+    where winget >nul 2>nul
+    if %ERRORLEVEL% equ 0 (
+        winget install --id Microsoft.VCRedist.2015+.x64 -e --source winget --accept-package-agreements --accept-source-agreements >nul 2>&1
+    ) else (
+        powershell -NoProfile -Command "Invoke-WebRequest -Uri 'https://aka.ms/vs/17/release/vc_redist.x64.exe' -OutFile '$env:TEMP\vc_redist.x64.exe'; Start-Process '$env:TEMP\vc_redist.x64.exe' -ArgumentList '/passive','/norestart' -Wait" >nul 2>&1
+    )
+)
+
 call venv\Scripts\activate.bat
+
+:: Upgrade core packaging tools
 python -m pip install --upgrade pip setuptools wheel >setup.log 2>&1
-python -m pip install -r requirements.txt >>setup.log 2>&1
+
+:: Install requirements with --prefer-binary to prioritize pre-compiled wheels and prevent C++ compilation
+python -m pip install --prefer-binary -r requirements.txt >>setup.log 2>&1
 
 if %ERRORLEVEL% neq 0 (
+    :: Check if the failure was caused by missing Microsoft Visual C++ Build Tools
+    findstr /i "Microsoft.Visual.C++ cl.exe vcvarsall Build.Tools VCTools LINK.exe Rust.compiler" setup.log >nul 2>&1
+    if %ERRORLEVEL% equ 0 goto :handle_cpp_build_error
+
     echo.
     echo   [ERROR] Failed to install required packages!
     echo   Details from setup.log:
@@ -171,6 +190,7 @@ if %ERRORLEVEL% neq 0 (
     exit /b 1
 )
 
+:step3_success
 if exist setup.log del setup.log >nul 2>&1
 echo       All components installed successfully! [OK]
 echo.
@@ -178,6 +198,7 @@ echo.
 :: -----------------------------------------------------------------------------
 :: Step 4: Configuration File
 :: -----------------------------------------------------------------------------
+:step4_config
 echo [4/4] Verifying configuration file...
 if not exist "config.yaml" (
     if exist "config.example.yaml" (
@@ -225,3 +246,106 @@ echo You can start PocketDeck at any time by double-clicking:
 echo   run.bat  (or the Desktop shortcut if created)
 echo.
 pause
+exit /b 0
+
+
+:: =============================================================================
+:: Special Handler: Microsoft Visual C++ Build Tools Missing
+:: =============================================================================
+:handle_cpp_build_error
+echo.
+echo ===============================================================================
+echo        ⚠️  Microsoft Visual C++ Build Tools Required by Windows
+echo ===============================================================================
+echo.
+echo   Windows was unable to compile one or more components because the
+echo   Microsoft Visual C++ Build Tools are not installed on this PC.
+echo.
+echo   How would you like to resolve this?
+echo     [1] Try installing pre-built binary wheels only (Fastest, no compiler needed)
+echo     [2] Automatically install Visual C++ Build Tools via Windows (winget)
+echo     [3] Download official Microsoft Build Tools installer (vs_BuildTools.exe)
+echo     [4] Open Microsoft C++ Build Tools download webpage in browser
+echo     [5] View full setup error log
+echo     [6] Cancel setup
+echo.
+set /p CPP_CHOICE="  Enter your choice [1-6] (Default: 1): "
+if "%CPP_CHOICE%"=="" set CPP_CHOICE=1
+
+if "%CPP_CHOICE%"=="1" (
+    echo.
+    echo   Attempting installation with binary-only pre-compiled packages...
+    python -m pip install --only-binary :all: -r requirements.txt >>setup.log 2>&1
+    if %ERRORLEVEL% equ 0 (
+        echo   [✓] Pre-compiled binary packages installed successfully!
+        goto :step3_success
+    ) else (
+        echo   [!] Pre-compiled binary wheels were not found for all components.
+        echo       A C++ compiler is needed for this system.
+        goto :handle_cpp_build_error
+    )
+)
+
+if "%CPP_CHOICE%"=="2" (
+    echo.
+    where winget >nul 2>nul
+    if %ERRORLEVEL% equ 0 (
+        echo   Installing Visual Studio 2022 Build Tools via winget...
+        echo   This may take several minutes. Please keep this window open.
+        winget install Microsoft.VisualStudio.2022.BuildTools -e --source winget --override "--passive --wait --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended"
+        echo.
+        echo   Installation complete. Retrying component installation...
+        python -m pip install -r requirements.txt
+        if %ERRORLEVEL% equ 0 goto :step3_success
+    ) else (
+        echo   Windows Package Manager (winget) not found.
+        echo   Switching to official installer download...
+        goto :download_vs_buildtools
+    )
+)
+
+:download_vs_buildtools
+if "%CPP_CHOICE%"=="3" (
+    echo.
+    echo   Downloading Microsoft Visual C++ Build Tools bootstrapper...
+    powershell -NoProfile -Command "Invoke-WebRequest -Uri 'https://aka.ms/vs/17/release/vs_BuildTools.exe' -OutFile '$env:TEMP\vs_BuildTools.exe'"
+    echo   Launching Microsoft Visual Studio Build Tools installer...
+    start "" "%TEMP%\vs_BuildTools.exe" --passive --wait --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended
+    echo.
+    echo   Once the Visual Studio installer completes, press any key to continue setup...
+    pause
+    python -m pip install -r requirements.txt
+    if %ERRORLEVEL% equ 0 goto :step3_success
+)
+
+if "%CPP_CHOICE%"=="4" (
+    echo.
+    echo   Opening Microsoft Visual C++ Build Tools download page...
+    start https://visualstudio.microsoft.com/visual-cpp-build-tools/
+    echo.
+    echo   ======================================================================
+    echo   MANUAL INSTALLATION INSTRUCTIONS:
+    echo     1. Download "Build Tools" from the opened Microsoft web page.
+    echo     2. Run the installer (vs_BuildTools.exe).
+    echo     3. In the Workloads list, check:
+    echo          [✓] "Desktop development with C++"
+    echo     4. Click "Install" in the bottom right corner.
+    echo     5. When finished, re-run setup.bat!
+    echo   ======================================================================
+    echo.
+    pause
+    exit /b 1
+)
+
+if "%CPP_CHOICE%"=="5" (
+    echo.
+    echo ============================== FULL ERROR LOG ==============================
+    type setup.log
+    echo ============================================================================
+    echo.
+    goto :handle_cpp_build_error
+)
+
+echo Setup cancelled.
+pause
+exit /b 1
