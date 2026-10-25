@@ -1,30 +1,28 @@
 @echo off
 setlocal
+title PocketDeck Server
+chcp 65001 >nul
 cd /d "%~dp0"
 
-echo ===============================================================================
-echo                         PocketDeck Control Server
-echo ===============================================================================
-echo.
-
+:: If first-time user runs run.bat directly without setup, run setup automatically
 if not exist "venv\Scripts\activate.bat" (
-    echo [INFO] Virtual environment not found. Running setup first...
+    echo [INFO] First-time launch detected. Running setup wizard...
+    echo.
     call setup.bat
     if %ERRORLEVEL% neq 0 (
-        echo [ERROR] Setup failed.
+        echo [ERROR] Setup encountered an issue.
         pause
         exit /b 1
     )
+    exit /b 0
 )
 
 call venv\Scripts\activate.bat
 
-echo Starting server...
-python -c "import sys; print(f'Environment: Python {sys.version.split()[0]} (64-bit)')"
-echo.
-echo Access the control surface from your phone or browser at:
-echo   http://localhost:8765
-echo.
 python -m server.main
 
-pause
+if %ERRORLEVEL% neq 0 (
+    echo.
+    echo Server stopped with code %ERRORLEVEL%.
+    pause
+)

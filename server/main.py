@@ -25,5 +25,6 @@ app.mount("/", StaticFiles(directory=web_dir, html=True), name="web")
 
 if __name__ == "__main__":
     import uvicorn
-    # Make sure to run this file from the project root or adjust the python path
-    uvicorn.run("server.main:app", host=settings.server.host, port=settings.server.port, reload=True)
+    from server.setup_helper import print_connection_card
+    print_connection_card(settings.server.port)
+    uvicorn.run("server.main:app", host=settings.server.host, port=settings.server.port, reload=False)

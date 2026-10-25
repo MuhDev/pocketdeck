@@ -81,21 +81,24 @@
 
 ### Prerequisites
 - **Operating System:** Windows 10 or Windows 11 (64-bit)
-- **Python:** Python 3.13 or newer ([Download Python 3.13](https://www.python.org/downloads/)) — *ensure you check "Add Python to PATH" during installation.*
+- **Python:** Python 3.13 or newer *(optional: `setup.bat` can automatically install Python 3.13 for you if you don't have it)*
 
 ---
 
 ### Installation
 
-#### Method 1: One-Click Setup (Recommended)
-1. Clone or download this repository:
+#### Method 1: Automatic Setup Wizard (Recommended for everyone)
+1. Download or clone this repository to your PC:
    ```bash
    git clone https://github.com/MuhDev/pocketdeck.git
    cd pocketdeck
    ```
-2. Double-click **`setup.bat`**.  
-   *This automatically creates the Python virtual environment (`venv`), installs all required dependencies, and sets up your default `config.yaml`.*
-3. Double-click **`run.bat`** to start the server.
+2. Double-click **`setup.bat`** (or simply double-click **`run.bat`**):
+   - Automatically detects Python (or offers to install Python 3.13 for you in 1 click).
+   - Creates an isolated application environment (`venv`).
+   - Installs all dependencies cleanly without terminal clutter.
+   - Offers to create a **Desktop shortcut** so you can launch it with one click anytime.
+   - Offers to start the server immediately!
 
 #### Method 2: Manual Setup
 ```powershell
@@ -118,16 +121,11 @@ python -m server.main
 
 ## 📱 Connecting Your Phone
 
-1. Ensure your smartphone or tablet is connected to the **same local Wi-Fi / network** as your Windows PC.
-2. Find your PC's local IP address:
-   - Open PowerShell or Command Prompt and run `ipconfig`.
-   - Look for the **IPv4 Address** (typically `192.168.x.x` or `10.0.x.x`).
-3. Open your mobile browser and navigate to:
-   ```
-   http://<YOUR-PC-IP>:8765
-   ```
-   *(Example: `http://192.168.1.50:8765`)*
-4. Enter the default PIN: **`1234`**
+1. Ensure your phone or tablet is connected to the **same Wi-Fi network** as your PC.
+2. Start the server (double-click `run.bat` or your Desktop shortcut).
+3. **Scan the QR Code** displayed right in your terminal window using your phone's camera, or type the mobile URL shown on screen (e.g. `http://192.168.1.50:8765`).
+4. Enter the default PIN: **`1234`** (this can be changed in `config.yaml`).
+5. **Tip:** In Safari (iOS) or Chrome (Android), tap **"Add to Home Screen"** to run PocketDeck as a full-screen, app-like experience!
 5. **Install as PWA (Optional but recommended):**
    - **iOS Safari:** Tap the **Share** button $\to$ tap **Add to Home Screen**.
    - **Android Chrome:** Tap the **Menu (⋮)** $\to$ tap **Install app** or **Add to Home screen**.
