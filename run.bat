@@ -1,28 +1,36 @@
 @echo off
 setlocal
-title PocketDeck Server
-chcp 65001 >nul
+title PocketDeck Control Server
 cd /d "%~dp0"
 
-:: If first-time user runs run.bat directly without setup, run setup automatically
 if not exist "venv\Scripts\activate.bat" (
-    echo [INFO] First-time launch detected. Running setup wizard...
+    echo ===============================================================================
+    echo                    PocketDeck - First Time Launch Detected
+    echo ===============================================================================
     echo.
-    call setup.bat
-    if %ERRORLEVEL% neq 0 (
+    echo Running setup wizard first...
+    echo.
+    call "%~dp0setup.bat"
+    if errorlevel 1 (
+        echo.
         echo [ERROR] Setup encountered an issue.
         pause
         exit /b 1
     )
-    exit /b 0
 )
 
-call venv\Scripts\activate.bat
+if not exist "venv\Scripts\activate.bat" (
+    echo.
+    echo [ERROR] Virtual environment was not found. Please run setup.bat.
+    pause
+    exit /b 1
+)
 
+call "%~dp0venv\Scripts\activate.bat"
 python -m server.main
 
-if %ERRORLEVEL% neq 0 (
+if errorlevel 1 (
     echo.
-    echo Server stopped with code %ERRORLEVEL%.
+    echo [ERROR] PocketDeck stopped with an error.
     pause
 )

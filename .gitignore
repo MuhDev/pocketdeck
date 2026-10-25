@@ -12,6 +12,8 @@ __pycache__/
 # Runtime Caches (Preserve directory structure via .gitkeep)
 data/icons/cache/*
 !data/icons/cache/.gitkeep
+data/icons/custom/*
+!data/icons/custom/.gitkeep
 data/media/cache/*
 !data/media/cache/.gitkeep
 data/media/now_playing.jpg

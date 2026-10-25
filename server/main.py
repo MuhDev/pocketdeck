@@ -27,4 +27,12 @@ if __name__ == "__main__":
     import uvicorn
     from server.setup_helper import print_connection_card
     print_connection_card(settings.server.port)
-    uvicorn.run("server.main:app", host=settings.server.host, port=settings.server.port, reload=False)
+    try:
+        uvicorn.run("server.main:app", host=settings.server.host, port=settings.server.port, reload=False)
+    except OSError as e:
+        if getattr(e, "winerror", None) == 10048 or "10048" in str(e):
+            print(f"\n[!] Port {settings.server.port} is already in use!")
+            print("    PocketDeck is already running on this PC.")
+            print(f"    Open your browser and go to: http://localhost:{settings.server.port}\n")
+        else:
+            raise
