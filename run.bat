@@ -20,6 +20,8 @@ if not exist "venv\Scripts\activate.bat" (
 call venv\Scripts\activate.bat
 
 echo Starting server...
+python -c "import sys; print(f'Environment: Python {sys.version.split()[0]} (64-bit)')"
+echo.
 echo Access the control surface from your phone or browser at:
 echo   http://localhost:8765
 echo.

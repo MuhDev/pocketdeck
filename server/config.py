@@ -1,6 +1,6 @@
 import yaml
 import os
-from typing import List, Optional, Literal
+from typing import Literal
 from pydantic import BaseModel, Field
 
 CONFIG_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "config.yaml")
@@ -11,8 +11,8 @@ class ServerConfig(BaseModel):
     pin_hash: str
 
 class DiscordConfig(BaseModel):
-    mute_hotkey: List[str]
-    deafen_hotkey: List[str]
+    mute_hotkey: list[str]
+    deafen_hotkey: list[str]
 
 DEFAULT_PIN_HASH = "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4"
 
@@ -21,14 +21,14 @@ class PresetConfig(BaseModel):
     name: str
     type: Literal["app", "url", "folder", "steam", "shell_app"]
     target: str
-    args: Optional[List[str]] = None
-    icon: Optional[str] = None
-    accent: Optional[str] = None
+    args: list[str] | None = None
+    icon: str | None = None
+    accent: str | None = None
 
 class AppConfig(BaseModel):
     server: ServerConfig
     discord: DiscordConfig
-    presets: List[PresetConfig] = []
+    presets: list[PresetConfig] = Field(default_factory=list)
 
 import shutil
 

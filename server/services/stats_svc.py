@@ -4,7 +4,7 @@ import ctypes
 import subprocess
 import csv
 import io
-from typing import Optional, List, Dict, Any
+from typing import Any
 import psutil
 
 # Prime CPU counter on module load so the first call returns real elapsed delta
@@ -19,9 +19,9 @@ class GpuMonitor:
     """
 
     def __init__(self):
-        self._backend: Optional[str] = None
+        self._backend: str | None = None
         self._nvml = None
-        self._nvml_devices: List[Any] = []
+        self._nvml_devices: list[Any] = []
         self._gpu_name: str = ""
         self._last_poll: float = 0.0
         self._cached_gpu: int = 0
@@ -163,7 +163,7 @@ class GpuMonitor:
 _gpu_monitor = GpuMonitor()
 
 
-def get_system_stats() -> Dict[str, Any]:
+def get_system_stats() -> dict[str, Any]:
     return {
         "cpu": round(psutil.cpu_percent(interval=None)),
         "ram": round(psutil.virtual_memory().percent),

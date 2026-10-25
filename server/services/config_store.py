@@ -2,7 +2,7 @@ import os
 import re
 import hashlib
 import threading
-from typing import List, Optional, Dict, Any
+from typing import Any
 from ruamel.yaml import YAML
 
 from server.config import CONFIG_PATH, PresetConfig, settings
@@ -26,7 +26,7 @@ def _slugify(name: str, existing_ids: set) -> str:
     return candidate
 
 
-def serialize_preset(preset: PresetConfig) -> Dict[str, Any]:
+def serialize_preset(preset: PresetConfig) -> dict[str, Any]:
     _, accent = icon_svc.get_preset_icon(preset)
     ver_src = f"{preset.type}:{preset.target}:{preset.icon or ''}"
     ver = hashlib.sha1(ver_src.encode("utf-8")).hexdigest()[:8]
@@ -42,14 +42,14 @@ def serialize_preset(preset: PresetConfig) -> Dict[str, Any]:
     }
 
 
-def _persist_presets_locked(presets: List[PresetConfig]):
+def _persist_presets_locked(presets: list[PresetConfig]):
     """Writes updated presets list to config.yaml while preserving comments and formatting."""
     with open(CONFIG_PATH, "r", encoding="utf-8") as f:
         doc = _yaml.load(f)
 
     serialized_list = []
     for p in presets:
-        item: Dict[str, Any] = {
+        item: dict[str, Any] = {
             "id": p.id,
             "name": p.name,
             "type": p.type,
@@ -76,10 +76,10 @@ def add_preset(
     name: str,
     preset_type: str,
     target: str,
-    args: Optional[List[str]] = None,
-    icon: Optional[str] = None,
-    preset_id: Optional[str] = None,
-    index: Optional[int] = None,
+    args: list[str] | None = None,
+    icon: str | None = None,
+    preset_id: str | None = None,
+    index: int | None = None,
 ) -> PresetConfig:
     clean_name = (name or "").strip()[:60]
     clean_target = (target or "").strip()
@@ -117,11 +117,11 @@ def add_preset(
 
 def update_preset(
     preset_id: str,
-    name: Optional[str] = None,
-    target: Optional[str] = None,
-    args: Optional[List[str]] = None,
-    icon: Optional[str] = None,
-) -> Optional[PresetConfig]:
+    name: str | None = None,
+    target: str | None = None,
+    args: list[str] | None = None,
+    icon: str | None = None,
+) -> PresetConfig | None:
     with _store_lock:
         current = list(settings.presets)
         target_preset = None
@@ -161,7 +161,7 @@ def delete_preset(preset_id: str) -> bool:
         return True
 
 
-def reorder_presets(ordered_ids: List[str]) -> List[PresetConfig]:
+def reorder_presets(ordered_ids: list[str]) -> list[PresetConfig]:
     with _store_lock:
         current = list(settings.presets)
         by_id = {p.id: p for p in current}

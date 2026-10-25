@@ -81,7 +81,7 @@
 
 ### Prerequisites
 - **Operating System:** Windows 10 or Windows 11 (64-bit)
-- **Python:** Python 3.10 or newer ([Download Python](https://www.python.org/downloads/)) — *ensure you check "Add Python to PATH" during installation.*
+- **Python:** Python 3.13 or newer ([Download Python 3.13](https://www.python.org/downloads/)) — *ensure you check "Add Python to PATH" during installation.*
 
 ---
 
@@ -190,7 +190,7 @@ Paste the output into `pin_hash` inside `config.yaml` and restart the server.
 ## 🛠️ Architecture & Contributing
 
 PocketDeck is built with a zero-compilation philosophy:
-- **Backend:** Python 3.10+ with FastAPI, Uvicorn, and native Windows bindings (`pycaw`, `comtypes`, `pynput`, `psutil`).
+- **Backend:** Python 3.13+ with FastAPI, Uvicorn, and native Windows bindings (`pycaw`, `comtypes`, `pynput`, `psutil`).
 - **COM Apartment Safety:** Windows CoreAudio calls execute in a dedicated STA background worker (`AudioCOMThread`) to prevent COM concurrency violations.
 - **Frontend:** Pure Vanilla JavaScript (ES modules) and native CSS design tokens. No Node.js build step or bundler needed.
 

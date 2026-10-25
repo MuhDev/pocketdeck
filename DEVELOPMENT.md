@@ -26,7 +26,7 @@ flowchart TD
     APIClient <--> HTTP
     UI <--> Static
 
-    subgraph Server ["FastAPI Server (Python 3.10+)"]
+    subgraph Server ["FastAPI Server (Python 3.13+)"]
         Main["App & Static Mount (main.py)"]
         Router["API Router & Auth Guard (api.py)"]
         ConfigStore["YAML Configuration Store (config_store.py)"]

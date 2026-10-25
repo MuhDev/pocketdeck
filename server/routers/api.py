@@ -1,8 +1,8 @@
 import os
 import platform
+from typing import Any
 from fastapi import APIRouter, Depends, HTTPException, Body, UploadFile, File, Query
 from fastapi.responses import FileResponse
-from typing import Dict, Any, List, Optional
 
 from server.auth import get_token_header, verify_pin
 from server.config import settings, DEFAULT_PIN_HASH
@@ -104,7 +104,7 @@ def get_installed_icon_endpoint(app_key: str):
 
 
 @router.get("/media/thumbnail")
-def get_media_thumbnail(v: Optional[str] = Query(None)):
+def get_media_thumbnail(v: str | None = Query(None)):
     path = media_svc.get_thumbnail_path(v)
     if path and os.path.exists(path):
         return FileResponse(
@@ -214,10 +214,10 @@ def create_app_preset(
     name: str = Body(...),
     type: str = Body(...),
     target: str = Body(...),
-    args: Optional[List[str]] = Body(None),
-    icon: Optional[str] = Body(None),
-    id: Optional[str] = Body(None),
-    index: Optional[int] = Body(None),
+    args: list[str] | None = Body(None),
+    icon: str | None = Body(None),
+    id: str | None = Body(None),
+    index: int | None = Body(None),
 ):
     try:
         preset = config_store.add_preset(
@@ -235,7 +235,7 @@ def create_app_preset(
 
 
 @protected_router.put("/apps/order")
-def reorder_app_presets(ids: List[str] = Body(..., embed=True)):
+def reorder_app_presets(ids: list[str] = Body(..., embed=True)):
     updated = config_store.reorder_presets(ids)
     return {"presets": [config_store.serialize_preset(p) for p in updated]}
 
@@ -243,10 +243,10 @@ def reorder_app_presets(ids: List[str] = Body(..., embed=True)):
 @protected_router.patch("/apps/{preset_id}")
 def update_app_preset(
     preset_id: str,
-    name: Optional[str] = Body(None),
-    target: Optional[str] = Body(None),
-    args: Optional[List[str]] = Body(None),
-    icon: Optional[str] = Body(None),
+    name: str | None = Body(None),
+    target: str | None = Body(None),
+    args: list[str] | None = Body(None),
+    icon: str | None = Body(None),
 ):
     preset = config_store.update_preset(
         preset_id=preset_id, name=name, target=target, args=args, icon=icon
@@ -347,7 +347,7 @@ async def get_obs_status():
 
 
 @protected_router.post("/obs/connect")
-async def connect_obs(body: Dict[str, Any] = Body(default={})):
+async def connect_obs(body: dict[str, Any] = Body(default={})):
     ok = await obs_svc.obs_service.connect(
         host=body.get("host"),
         port=body.get("port"),
@@ -438,7 +438,7 @@ async def set_obs_input_volume(name: str = Body(..., embed=True), volume: float 
 async def toggle_obs_item(
     id: int = Body(..., embed=True),
     enabled: bool = Body(..., embed=True),
-    scene: Optional[str] = Body(None, embed=True),
+    scene: str | None = Body(None, embed=True),
 ):
     ok = await obs_svc.obs_service.toggle_scene_item(scene, id, enabled)
     return {"status": "ok" if ok else "failed"}

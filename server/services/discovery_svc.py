@@ -3,11 +3,10 @@ import time
 import hashlib
 import subprocess
 import threading
-from typing import List, Dict, Optional
 
 _cache_lock = threading.Lock()
-_installed_apps: List[Dict[str, str]] = []
-_key_to_app: Dict[str, Dict[str, str]] = {}
+_installed_apps: list[dict[str, str]] = []
+_key_to_app: dict[str, dict[str, str]] = {}
 _last_fetched: float = 0.0
 CACHE_TTL_SECONDS = 300.0
 
@@ -27,7 +26,7 @@ _NOISE_KEYWORDS = (
 _NOISE_EXTENSIONS = (".chm", ".hlp", ".txt", ".pdf", ".html", ".htm", ".url")
 
 
-def _fetch_start_apps() -> List[Dict[str, str]]:
+def _fetch_start_apps() -> list[dict[str, str]]:
     cmd = [
         "powershell",
         "-NoProfile",
@@ -83,7 +82,7 @@ def _fetch_start_apps() -> List[Dict[str, str]]:
     return results
 
 
-def get_installed_apps(query: str = "", force_refresh: bool = False) -> List[Dict[str, str]]:
+def get_installed_apps(query: str = "", force_refresh: bool = False) -> list[dict[str, str]]:
     global _installed_apps, _key_to_app, _last_fetched
     now = time.time()
     with _cache_lock:
@@ -102,7 +101,7 @@ def get_installed_apps(query: str = "", force_refresh: bool = False) -> List[Dic
     return [a for a in apps_snapshot if q in a["name"].lower() or q in a["app_id"].lower()]
 
 
-def resolve_installed_key(key: str) -> Optional[Dict[str, str]]:
+def resolve_installed_key(key: str) -> dict[str, str] | None:
     with _cache_lock:
         found = _key_to_app.get(key)
     if found:

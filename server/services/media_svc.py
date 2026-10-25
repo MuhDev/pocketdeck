@@ -6,7 +6,7 @@ import hashlib
 import urllib.parse
 import urllib.request
 import subprocess
-from typing import Dict, Any, Optional, Set
+from typing import Any
 
 CACHE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "data", "media")
 THUMB_CACHE_DIR = os.path.join(CACHE_DIR, "cache")
@@ -17,7 +17,7 @@ os.makedirs(THUMB_CACHE_DIR, exist_ok=True)
 
 _last_poll_time = 0.0
 _poll_cache_ttl = 1.2  # Cache for 1.2 seconds to avoid slamming PowerShell
-_cached_state: Dict[str, Any] = {
+_cached_state: dict[str, Any] = {
     "has_media": False,
     "title": "",
     "artist": "",
@@ -30,8 +30,8 @@ _cached_state: Dict[str, Any] = {
     "has_thumbnail": False,
     "thumb_url": None,
 }
-_current_thumb_file: Optional[str] = None
-_negative_cache: Set[str] = set()
+_current_thumb_file: str | None = None
+_negative_cache: set[str] = set()
 
 
 def _get_track_hash(artist: str, title: str) -> str:
@@ -57,7 +57,7 @@ def _download_and_cache(url: str, dest_path: str) -> bool:
     return False
 
 
-def _fetch_online_artwork(artist: str, title: str, album: str = "") -> Optional[str]:
+def _fetch_online_artwork(artist: str, title: str, album: str = "") -> str | None:
     """Fetch official high-res album artwork via iTunes Search API with Deezer fallback."""
     if not title and not artist:
         return None
@@ -128,7 +128,7 @@ def _fetch_online_artwork(artist: str, title: str, album: str = "") -> Optional[
     return None
 
 
-def poll_media() -> Dict[str, Any]:
+def poll_media() -> dict[str, Any]:
     global _last_poll_time, _cached_state, _current_thumb_file
 
     now = time.time()
@@ -218,11 +218,11 @@ def poll_media() -> Dict[str, Any]:
     return _cached_state
 
 
-def get_now_playing() -> Dict[str, Any]:
+def get_now_playing() -> dict[str, Any]:
     return poll_media()
 
 
-def get_thumbnail_path(v: Optional[str] = None) -> Optional[str]:
+def get_thumbnail_path(v: str | None = None) -> str | None:
     poll_media()
     if v:
         # Sanitize v to prevent path traversal

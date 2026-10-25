@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=69.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pocketdeck"
+version = "1.0.0"
+description = "High-performance PC automation deck, volume mixer, and telemetry server"
+readme = "README.md"
+requires-python = ">=3.13"
+license = { text = "MIT" }
+authors = [
+    { name = "PocketDeck Contributors" }
+]
+keywords = ["fastapi", "control-deck", "windows-automation", "streamdeck", "coreaudio"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Win32 (MS Windows)",
+    "Framework :: FastAPI",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: System :: Hardware",
+]
+
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.30.0",
+    "pycaw>=20240210",
+    "comtypes>=1.4.0",
+    "pynput>=1.7.6",
+    "pyperclip>=1.9.0",
+    "psutil>=6.0.0",
+    "pyyaml>=6.0.1",
+    "pydantic>=2.8.0",
+    "pydantic-settings>=2.4.0",
+    "pystray>=0.19.5",
+    "pillow>=10.4.0",
+    "qrcode>=7.4.2",
+    "ruamel.yaml>=0.18.6",
+    "python-multipart>=0.0.9",
+    "websockets>=13.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "httpx>=0.27.0",
+]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-ra -q --strict-markers"
+
+[tool.ruff]
+target-version = "py313"
+line-length = 100

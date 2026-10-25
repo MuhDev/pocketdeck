@@ -10,7 +10,6 @@ import threading
 import urllib.request
 from urllib.parse import urlparse
 from ctypes import wintypes
-from typing import Optional, Tuple, Dict
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -23,7 +22,7 @@ os.makedirs(CACHE_DIR, exist_ok=True)
 os.makedirs(CUSTOM_DIR, exist_ok=True)
 
 _meta_lock = threading.Lock()
-_process_exe_map: Dict[str, str] = {}
+_process_exe_map: dict[str, str] = {}
 
 def register_process_exe(proc_name: str, exe_path: str):
     """Caches a mapping from process base name (without .exe) to full executable path."""
@@ -31,7 +30,7 @@ def register_process_exe(proc_name: str, exe_path: str):
         _process_exe_map[proc_name.lower()] = exe_path
 
 
-def _load_meta() -> Dict[str, dict]:
+def _load_meta() -> dict[str, dict]:
     with _meta_lock:
         if os.path.exists(META_PATH):
             try:
@@ -123,7 +122,7 @@ SHCreateItemFromParsingName.argtypes = [
 SHCreateItemFromParsingName.restype = ctypes.c_long
 
 
-def _extract_shell_icon(parsing_name: str, size: int = 256) -> Optional[Image.Image]:
+def _extract_shell_icon(parsing_name: str, size: int = 256) -> Image.Image | None:
     """
     Extracts a high-resolution RGBA icon using Windows IShellItemImageFactory::GetImage.
     Supports file paths (.exe, .lnk, .ico, folders) and shell:AppsFolder\\<AppID>.
@@ -235,7 +234,7 @@ def extract_dominant_accent(img: Image.Image) -> str:
     """
     try:
         small = img.convert("RGBA").resize((32, 32), Image.Resampling.BILINEAR)
-        pixels = list(small.getdata())
+        pixels = list(small.get_flattened_data()) if hasattr(small, "get_flattened_data") else list(small.getdata())
         r_sum = g_sum = b_sum = w_sum = 0.0
 
         for r, g, b, a in pixels:
@@ -277,7 +276,7 @@ def extract_dominant_accent(img: Image.Image) -> str:
         return "#7C5CFF"
 
 
-def _draw_brand_url_icon(url: str, name: str, size: int = 256) -> Optional[Image.Image]:
+def _draw_brand_url_icon(url: str, name: str, size: int = 256) -> Image.Image | None:
     """
     Renders crisp 256x256 vector-grade icons for popular web destinations (YouTube, Twitch,
     Spotify, GitHub, Netflix, Reddit, etc.), or fetches high-res site favicon if online.
@@ -411,7 +410,7 @@ def generate_fallback_icon(name: str, size: int = 256) -> Image.Image:
     return base.resize((size, size), Image.Resampling.LANCZOS)
 
 
-def _resolve_app_target_for_icon(target: str, args: Optional[list] = None) -> Optional[str]:
+def _resolve_app_target_for_icon(target: str, args: list | None = None) -> str | None:
     """
     Resolves an executable/shortcut/Squirrel path to the best file for icon extraction.
     """
@@ -445,7 +444,7 @@ def _resolve_app_target_for_icon(target: str, args: Optional[list] = None) -> Op
     return None
 
 
-def _load_ico_or_image_file(path: str, size: int = 256) -> Optional[Image.Image]:
+def _load_ico_or_image_file(path: str, size: int = 256) -> Image.Image | None:
     """Loads an .ico or image file directly at highest available resolution."""
     try:
         im = Image.open(path)
@@ -460,7 +459,7 @@ def _load_ico_or_image_file(path: str, size: int = 256) -> Optional[Image.Image]
         return None
 
 
-def get_preset_icon(preset) -> Tuple[str, str]:
+def get_preset_icon(preset) -> tuple[str, str]:
     """
     Returns (png_file_path, accent_hex) for a PresetConfig.
     Uses disk cache in data/icons/cache/ unless custom icon or target changed.
@@ -473,7 +472,7 @@ def get_preset_icon(preset) -> Tuple[str, str]:
     if os.path.exists(png_path) and cache_key in meta:
         return png_path, meta[cache_key].get("accent", "#7C5CFF")
 
-    img: Optional[Image.Image] = None
+    img: Image.Image | None = None
 
     # 1. Custom icon override if specified
     if getattr(preset, "icon", None):
@@ -511,7 +510,7 @@ def get_preset_icon(preset) -> Tuple[str, str]:
     return png_path, accent
 
 
-def get_installed_app_icon(app_id: str, name: str = "App") -> Tuple[str, str]:
+def get_installed_app_icon(app_id: str, name: str = "App") -> tuple[str, str]:
     """
     Returns (png_file_path, accent_hex) for an installed Start Menu app (shell:AppsFolder\\<AppID>).
     """
@@ -537,7 +536,7 @@ def get_installed_app_icon(app_id: str, name: str = "App") -> Tuple[str, str]:
     return png_path, accent
 
 
-def get_process_icon(proc_name: str) -> Tuple[str, str]:
+def get_process_icon(proc_name: str) -> tuple[str, str]:
     """
     Returns (png_file_path, accent_hex) for an audio session process name (e.g. 'Spotify', 'chrome').
     """

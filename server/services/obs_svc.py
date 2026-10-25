@@ -6,7 +6,7 @@ import asyncio
 import subprocess
 import threading
 import time
-from typing import Dict, Any, List, Optional
+from typing import Any
 import websockets
 
 CONFIG_DIR = os.path.join(os.environ.get("APPDATA", ""), "obs-studio", "plugin_config", "obs-websocket")
@@ -14,7 +14,7 @@ CONFIG_PATH = os.path.join(CONFIG_DIR, "config.json")
 OBS_EXE_PATH = r"C:\Program Files\obs-studio\bin\64bit\obs64.exe"
 
 
-def _read_obs_ws_config() -> Dict[str, Any]:
+def _read_obs_ws_config() -> dict[str, Any]:
     """Read OBS WebSocket v5 config from obs-studio directory if present."""
     if os.path.exists(CONFIG_PATH):
         try:
@@ -54,23 +54,22 @@ class ObsService:
 
         self.current_program_scene = ""
         self.current_preview_scene = ""
-        self.scenes: List[str] = []
-        self.audio_inputs: List[Dict[str, Any]] = []
-        self.scene_items: List[Dict[str, Any]] = []
+        self.scenes: list[str] = []
+        self.audio_inputs: list[dict[str, Any]] = []
+        self.scene_items: list[dict[str, Any]] = []
 
         self._ws = None
         self._loop = None
         self._thread = None
         self._req_id = 1
-        self._pending_responses: Dict[str, asyncio.Future] = {}
-        self._lock = asyncio.Lock() if asyncio.get_event_loop().is_running() else None
+        self._pending_responses: dict[str, asyncio.Future] = {}
 
     def _get_auth_response(self, password: str, salt: str, challenge: str) -> str:
         s1 = base64.b64encode(hashlib.sha256((password + salt).encode("utf-8")).digest()).decode("utf-8")
         auth = base64.b64encode(hashlib.sha256((s1 + challenge).encode("utf-8")).digest()).decode("utf-8")
         return auth
 
-    async def connect(self, host: Optional[str] = None, port: Optional[int] = None, password: Optional[str] = None) -> bool:
+    async def connect(self, host: str | None = None, port: int | None = None, password: str | None = None) -> bool:
         if host:
             self.host = host
         if port:
@@ -94,7 +93,7 @@ class ObsService:
 
             d = hello.get("d", {})
             auth_info = d.get("authentication")
-            identify_d: Dict[str, Any] = {"rpcVersion": 1, "eventSubscriptions": 1023}
+            identify_d: dict[str, Any] = {"rpcVersion": 1, "eventSubscriptions": 1023}
 
             if auth_info:
                 salt = auth_info.get("salt", "")
@@ -161,7 +160,7 @@ class ObsService:
             self.connected = False
             self._ws = None
 
-    def _handle_event(self, d: Dict[str, Any]):
+    def _handle_event(self, d: dict[str, Any]):
         event_type = d.get("eventType")
         event_data = d.get("eventData", {})
 
@@ -196,7 +195,7 @@ class ObsService:
         elif event_type in ("SceneItemEnableStateChanged", "SceneItemCreated", "SceneItemRemoved"):
             asyncio.create_task(self._refresh_scene_items())
 
-    async def send_request(self, request_type: str, request_data: Optional[Dict[str, Any]] = None) -> Optional[Dict[str, Any]]:
+    async def send_request(self, request_type: str, request_data: dict[str, Any] | None = None) -> dict[str, Any] | None:
         if not self.connected or not self._ws:
             # Try lazy auto-connect
             ok = await self.connect()
@@ -205,7 +204,8 @@ class ObsService:
 
         req_id = f"req-{self._req_id}"
         self._req_id += 1
-        fut = asyncio.get_event_loop().create_future()
+        loop = asyncio.get_running_loop()
+        fut = loop.create_future()
         self._pending_responses[req_id] = fut
 
         payload = {
@@ -437,7 +437,7 @@ class ObsService:
                 pass
         return False
 
-    def get_state(self) -> Dict[str, Any]:
+    def get_state(self) -> dict[str, Any]:
         # If offline or not connected, return structured state with fallback mock items
         # so UI renders beautifully and allows streamer preview
         scenes = self.scenes if self.scenes else ["Main Gaming", "Just Chatting", "Starting Soon", "BRB", "Ending"]
