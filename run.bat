@@ -1,6 +1,17 @@
 @echo off
 setlocal
-title PocketDeck Control Server
+cd /d "%~dp0"
+
+:: Ensure PocketDeck always runs with Administrator privileges
+net session >nul 2>&1
+if errorlevel 1 (
+    echo Requesting Administrator privileges for PocketDeck...
+    set "BATCH_PATH=%~f0"
+    powershell -NoProfile -ExecutionPolicy Bypass -Command "Start-Process -FilePath $env:BATCH_PATH -WorkingDirectory $env:CD -Verb RunAs"
+    exit /b 0
+)
+
+title PocketDeck Control Server (Administrator)
 cd /d "%~dp0"
 
 if not exist "venv\Scripts\activate.bat" (
@@ -27,6 +38,7 @@ if not exist "venv\Scripts\activate.bat" (
 )
 
 call "%~dp0venv\Scripts\activate.bat"
+if not exist "PocketDeck.lnk" python -m server.setup_helper --create-shortcut >nul 2>&1
 python -m server.main
 
 if errorlevel 1 (

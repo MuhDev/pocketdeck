@@ -1,6 +1,17 @@
 @echo off
 setlocal enabledelayedexpansion
-title PocketDeck Setup Wizard
+cd /d "%~dp0"
+
+:: Ensure Setup Wizard runs with Administrator privileges
+net session >nul 2>&1
+if errorlevel 1 (
+    echo Requesting Administrator privileges for PocketDeck Setup...
+    set "BATCH_PATH=%~f0"
+    powershell -NoProfile -ExecutionPolicy Bypass -Command "Start-Process -FilePath $env:BATCH_PATH -WorkingDirectory $env:CD -Verb RunAs"
+    exit /b 0
+)
+
+title PocketDeck Setup Wizard (Administrator)
 chcp 65001 >nul 2>&1
 cd /d "%~dp0"
 

@@ -1,7 +1,16 @@
 import threading
 import queue
+import warnings
 from comtypes import CoInitialize
 from pycaw.pycaw import AudioUtilities
+from pycaw.constants import DEVICE_STATE
+
+# Silence harmless pycaw property-store warnings on virtual/driver audio endpoints (e.g. ASUS Sonic Studio / Bluetooth)
+warnings.filterwarnings(
+    "ignore",
+    message=r"COMError attempting to get property.*",
+    category=UserWarning,
+)
 
 _audio_queue = queue.Queue()
 
@@ -74,7 +83,9 @@ def _get_all_sessions_across_devices():
     from pycaw.pycaw import AudioUtilities, AudioSession
     sessions = []
     try:
-        devices = AudioUtilities.GetAllDevices()
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", UserWarning)
+            devices = AudioUtilities.GetAllDevices(device_state=DEVICE_STATE.ACTIVE.value)
         for device in devices:
             if getattr(device.state, 'value', device.state) != 1:  # 1 is Active
                 continue
